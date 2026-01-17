@@ -4,9 +4,10 @@ import styles from "./GameBoard.module.css";
 
 type Props = {
   board: Board;
+  onOpenCell: (x: number, y: number) => void;
 };
 
-export const GameBoard = ({ board }: Props) => {
+export const GameBoard = ({ board, onOpenCell }: Props) => {
   return (
     <div
       className={styles.board}
@@ -14,9 +15,11 @@ export const GameBoard = ({ board }: Props) => {
         gridTemplateColumns: `repeat(${board.width}, 1fr)`,
       }}
     >
-      {board.cells.flat().map((cell) => (
-        <Cell key={`${cell.x}-${cell.y}`} cell={cell} />
-      ))}
+      {board.cells.map((row) =>
+        row.map((cell) => (
+          <Cell key={`${cell.x}-${cell.y}`} cell={cell} onOpen={onOpenCell} />
+        ))
+      )}
     </div>
   );
 };
