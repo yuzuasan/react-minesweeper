@@ -1,0 +1,6 @@
+.board {
+  display: grid;
+  gap: 2px;
+  background-color: #888;
+  width: fit-content;
+}
