@@ -5,6 +5,7 @@ import type {
   GameState,
   GameStatus,
 } from "../types/game";
+import { calculateAdjacentMines, placeMines } from "./mineGenerator";
 
 /**
  * 空の盤面を生成する（地雷なし）
@@ -43,12 +44,19 @@ export function createEmptyBoard(setting: DifficultySetting): Board {
  * に使用される想定
  */
 export function initializeGameState(setting: DifficultySetting): GameState {
-  const board = createEmptyBoard(setting);
+  // ① 空の盤面
+  const emptyBoard = createEmptyBoard(setting);
+
+  // ② 地雷配置
+  const boardWithMines = placeMines(emptyBoard);
+
+  // ③ 周囲地雷数計算
+  const completedBoard = calculateAdjacentMines(boardWithMines);
 
   const gameStatus: GameStatus = "ready";
 
   return {
-    board,
+    board: completedBoard,
     gameStatus,
     difficulty: setting.type,
     setting,
