@@ -5,9 +5,10 @@ import styles from "./GameBoard.module.css";
 type Props = {
   board: Board;
   onOpenCell: (x: number, y: number) => void;
+  onToggleFlag: (x: number, y: number) => void;
 };
 
-export const GameBoard = ({ board, onOpenCell }: Props) => {
+export const GameBoard = ({ board, onOpenCell, onToggleFlag }: Props) => {
   return (
     <div
       className={styles.board}
@@ -17,8 +18,13 @@ export const GameBoard = ({ board, onOpenCell }: Props) => {
     >
       {board.cells.map((row) =>
         row.map((cell) => (
-          <Cell key={`${cell.x}-${cell.y}`} cell={cell} onOpen={onOpenCell} />
-        ))
+          <Cell
+            key={`${cell.x}-${cell.y}`}
+            cell={cell}
+            onOpen={onOpenCell}
+            onToggleFlag={onToggleFlag}
+          />
+        )),
       )}
     </div>
   );

@@ -5,9 +5,9 @@ import type { Board } from "../types/game";
  */
 export function toggleFlag(
   board: Board,
+  remainingMines: number,
   x: number,
   y: number,
-  remainingMines: number
 ): {
   board: Board;
   remainingMines: number;
@@ -24,11 +24,16 @@ export function toggleFlag(
     return { board, remainingMines };
   }
 
+  // ★ board をコピー
+  const newCells = board.cells.map((row) => row.map((c) => ({ ...c })));
+
+  const target = newCells[y][x];
+
   // 旗が立っている場合は解除
-  if (cell.isFlagged) {
-    cell.isFlagged = false;
+  if (target.isFlagged) {
+    target.isFlagged = false;
     return {
-      board,
+      board: { ...board, cells: newCells },
       remainingMines: remainingMines + 1,
     };
   }
@@ -38,10 +43,10 @@ export function toggleFlag(
     return { board, remainingMines };
   }
 
-  cell.isFlagged = true;
+  target.isFlagged = true;
 
   return {
-    board,
+    board: { ...board, cells: newCells },
     remainingMines: remainingMines - 1,
   };
 }
