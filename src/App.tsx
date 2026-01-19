@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameBoard } from "./components/GameBoard/GameBoard";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
 import { toggleFlag } from "./logic/flagHandler";
@@ -42,6 +42,22 @@ function App() {
       };
     });
   };
+
+  // タイマー制御
+  useEffect(() => {
+    if (gameState.gameStatus !== "playing") return;
+
+    const timerId = window.setInterval(() => {
+      setGameState((prev) => ({
+        ...prev,
+        elapsedTime: prev.elapsedTime + 1,
+      }));
+    }, 1000);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [gameState.gameStatus]);
 
   return (
     <div>
