@@ -10,6 +10,7 @@ type Props = {
 
 export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
   const touchTimerRef = useRef<number | null>(null);
+  const longPressFiredRef = useRef(false);
 
   let content = "";
 
@@ -23,7 +24,16 @@ export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
     content = "🚩";
   }
 
+  // ------------------------
+  // マウス（PC）
+  // ------------------------
   const handleClick = () => {
+    // タッチ長押し後の click を無効化
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false;
+      return;
+    }
+
     if (cell.isOpen || cell.isFlagged) return;
     onOpen(cell.x, cell.y);
   };
@@ -34,11 +44,17 @@ export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
     onToggleFlag(cell.x, cell.y);
   };
 
+  // ------------------------
+  // タッチ（スマホ）
+  // ------------------------
   const handleTouchStart = () => {
     if (cell.isOpen) return;
 
+    longPressFiredRef.current = false;
+
     touchTimerRef.current = window.setTimeout(() => {
       onToggleFlag(cell.x, cell.y);
+      longPressFiredRef.current = true;
       touchTimerRef.current = null;
     }, 500);
   };
