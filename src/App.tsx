@@ -15,9 +15,13 @@ function App() {
     setGameState((prev) => {
       const newBoard = openCell(prev.board, x, y);
 
+      // 初回マス開放時のみ
+      const isFirstOpen = prev.gameStatus === "ready";
+
       return {
         ...prev,
         board: newBoard,
+        gameStatus: isFirstOpen ? "playing" : prev.gameStatus,
       };
     });
   };
