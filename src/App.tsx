@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GameBoard } from "./components/GameBoard/GameBoard";
+import { Header } from "./components/Header/Header";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
 import { toggleFlag } from "./logic/flagHandler";
 import { initializeGameState } from "./logic/gameInitializer";
@@ -43,6 +44,10 @@ function App() {
     });
   };
 
+  const handleRestart = () => {
+    setGameState(initializeGameState(gameState.setting));
+  };
+
   // タイマー制御
   useEffect(() => {
     if (gameState.gameStatus !== "playing") return;
@@ -61,6 +66,12 @@ function App() {
 
   return (
     <div>
+      <Header
+        remainingMines={gameState.remainingMines}
+        elapsedTime={gameState.elapsedTime}
+        gameStatus={gameState.gameStatus}
+        onRestart={handleRestart}
+      />
       <GameBoard
         board={gameState.board}
         onOpenCell={handleOpenCell}
