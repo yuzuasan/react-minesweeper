@@ -2,39 +2,49 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 100;
 }
 
 .panel {
-  background: #c0c0c0;
+  background: #ddd;
   padding: 16px;
-  border: 2px solid #808080;
-  border-radius: 6px;
-  width: 260px;
+  border: 2px solid #999;
+  width: 320px;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  text-align: center;
 }
 
 .list {
   list-style: none;
   padding: 0;
-  margin: 12px 0;
+  margin: 0 0 12px;
 }
 
 .list li {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .list button {
   width: 100%;
-  padding: 8px;
+  padding: 6px;
+  background: #eee;
+  border: 1px solid #999;
   cursor: pointer;
 }
 
+.list button:hover {
+  background: #fff;
+}
+
 .active {
+  background: #bbb;
   font-weight: bold;
-  background-color: #a0a0a0;
 }
 
 .detail {
@@ -43,7 +53,46 @@
   opacity: 0.8;
 }
 
-.close {
+.custom {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #aaa;
+}
+
+.custom h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.custom label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.custom input {
+  width: 80px;
+}
+
+.apply {
   width: 100%;
   margin-top: 8px;
+  padding: 6px;
+  background: #cfc;
+  border: 1px solid #090;
+  cursor: pointer;
+}
+
+.apply:hover {
+  background: #bfb;
+}
+
+.close {
+  width: 100%;
+  margin-top: 12px;
+  padding: 6px;
+  background: #eee;
+  border: 1px solid #999;
+  cursor: pointer;
 }

@@ -84,6 +84,7 @@ function App() {
 
       {isDifficultyOpen && (
         <DifficultySelector
+          key={gameState.setting.type}
           current={gameState.setting}
           onSelect={(setting) => {
             setGameState(initializeGameState(setting));
