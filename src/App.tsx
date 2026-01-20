@@ -65,13 +65,14 @@ function App() {
   }, [gameState.gameStatus]);
 
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <Header
         remainingMines={gameState.remainingMines}
         elapsedTime={gameState.elapsedTime}
         gameStatus={gameState.gameStatus}
         onRestart={handleRestart}
       />
+
       <GameBoard
         board={gameState.board}
         onOpenCell={handleOpenCell}

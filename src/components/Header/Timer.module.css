@@ -1,0 +1,14 @@
+.timer {
+  justify-self: end;
+
+  padding: 4px 8px;
+
+  background-color: #000;
+  color: #ff0000;
+  font-family: "Courier New", monospace;
+  font-size: 18px;
+  font-weight: bold;
+
+  border: 2px inset #808080;
+  border-radius: 2px;
+}

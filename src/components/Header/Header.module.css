@@ -1,0 +1,12 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 8px 12px;
+  margin-bottom: 8px;
+
+  background-color: #c0c0c0;
+  border: 2px solid #808080;
+  border-radius: 4px;
+}
