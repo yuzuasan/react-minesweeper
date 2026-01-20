@@ -10,3 +10,30 @@
   border: 2px solid #808080;
   border-radius: 4px;
 }
+
+.right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  background-color: #c0c0c0;
+  border: 2px outset #ffffff;
+  border-radius: 4px;
+}
+
+.settings:active {
+  border: 2px inset #808080;
+}

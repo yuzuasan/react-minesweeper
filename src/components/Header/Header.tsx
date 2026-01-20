@@ -9,6 +9,7 @@ type Props = {
   elapsedTime: number;
   gameStatus: GameStatus;
   onRestart: () => void;
+  onOpenDifficulty: () => void;
 };
 
 export const Header = ({
@@ -16,12 +17,22 @@ export const Header = ({
   elapsedTime,
   gameStatus,
   onRestart,
+  onOpenDifficulty,
 }: Props) => {
   return (
     <div className={styles.header}>
       <MineCounter remainingMines={remainingMines} />
       <RestartButton gameStatus={gameStatus} onRestart={onRestart} />
-      <Timer elapsedTime={elapsedTime} />
+      <div className={styles.right}>
+        <Timer elapsedTime={elapsedTime} />
+        <button
+          className={styles.settings}
+          onClick={onOpenDifficulty}
+          aria-label="難易度設定"
+        >
+          ⚙
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DifficultySelector } from "./components/DifficultySelector/DifficultySelector";
 import { GameBoard } from "./components/GameBoard/GameBoard";
 import { Header } from "./components/Header/Header";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
@@ -11,6 +12,7 @@ const initialState = initializeGameState(DIFFICULTY_SETTINGS.easy);
 
 function App() {
   const [gameState, setGameState] = useState<GameState>(initialState);
+  const [isDifficultyOpen, setIsDifficultyOpen] = useState(false);
 
   const handleOpenCell = (x: number, y: number) => {
     setGameState((prev) => {
@@ -71,6 +73,7 @@ function App() {
         elapsedTime={gameState.elapsedTime}
         gameStatus={gameState.gameStatus}
         onRestart={handleRestart}
+        onOpenDifficulty={() => setIsDifficultyOpen(true)}
       />
 
       <GameBoard
@@ -78,6 +81,17 @@ function App() {
         onOpenCell={handleOpenCell}
         onToggleFlag={handleToggleFlag}
       />
+
+      {isDifficultyOpen && (
+        <DifficultySelector
+          current={gameState.setting}
+          onSelect={(setting) => {
+            setGameState(initializeGameState(setting));
+            setIsDifficultyOpen(false);
+          }}
+          onClose={() => setIsDifficultyOpen(false)}
+        />
+      )}
     </div>
   );
 }

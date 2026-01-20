@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  background: #c0c0c0;
+  padding: 16px;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  width: 260px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+
+.list li {
+  margin-bottom: 8px;
+}
+
+.list button {
+  width: 100%;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.active {
+  font-weight: bold;
+  background-color: #a0a0a0;
+}
+
+.detail {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.close {
+  width: 100%;
+  margin-top: 8px;
+}
