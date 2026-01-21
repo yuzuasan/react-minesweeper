@@ -1,0 +1,20 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.panel {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.panel h2 {
+  margin-bottom: 16px;
+}

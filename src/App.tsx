@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { DifficultySelector } from "./components/DifficultySelector/DifficultySelector";
 import { GameBoard } from "./components/GameBoard/GameBoard";
+import { GameResultOverlay } from "./components/GameResultOverlay/GameResultOverlay";
 import { Header } from "./components/Header/Header";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
 import { toggleFlag } from "./logic/flagHandler";
 import { initializeGameState } from "./logic/gameInitializer";
+import { judgeGameStatus } from "./logic/gameJudge";
 import { openCell } from "./logic/openCell";
 import type { GameState } from "./types/game";
 
@@ -16,15 +18,21 @@ function App() {
 
   const handleOpenCell = (x: number, y: number) => {
     setGameState((prev) => {
-      const newBoard = openCell(prev.board, x, y);
+      // 終了後は操作不可
+      if (prev.gameStatus === "clear" || prev.gameStatus === "gameover") {
+        return prev;
+      }
 
-      // 初回マス開放時のみ
-      const isFirstOpen = prev.gameStatus === "ready";
+      const board = openCell(prev.board, x, y);
+      const status = judgeGameStatus(board);
 
       return {
         ...prev,
-        board: newBoard,
-        gameStatus: isFirstOpen ? "playing" : prev.gameStatus,
+        board,
+        gameStatus:
+          prev.gameStatus === "ready" && status === "playing"
+            ? "playing"
+            : status,
       };
     });
   };
@@ -93,6 +101,11 @@ function App() {
           onClose={() => setIsDifficultyOpen(false)}
         />
       )}
+
+      <GameResultOverlay
+        status={gameState.gameStatus}
+        onRestart={() => setGameState(initializeGameState(gameState.setting))}
+      />
     </div>
   );
 }
