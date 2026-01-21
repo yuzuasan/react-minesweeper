@@ -15,6 +15,8 @@ const initialState = initializeGameState(DIFFICULTY_SETTINGS.easy);
 function App() {
   const [gameState, setGameState] = useState<GameState>(initialState);
   const [isDifficultyOpen, setIsDifficultyOpen] = useState(false);
+  const isGameFinished =
+    gameState.gameStatus === "clear" || gameState.gameStatus === "gameover";
 
   const handleOpenCell = (x: number, y: number) => {
     setGameState((prev) => {
@@ -39,6 +41,10 @@ function App() {
 
   const handleToggleFlag = (x: number, y: number) => {
     setGameState((prev) => {
+      if (prev.gameStatus === "clear" || prev.gameStatus === "gameover") {
+        return prev;
+      }
+
       const { board, remainingMines } = toggleFlag(
         prev.board,
         prev.remainingMines,
@@ -88,6 +94,7 @@ function App() {
         board={gameState.board}
         onOpenCell={handleOpenCell}
         onToggleFlag={handleToggleFlag}
+        disabled={isGameFinished}
       />
 
       {isDifficultyOpen && (
@@ -104,7 +111,7 @@ function App() {
 
       <GameResultOverlay
         status={gameState.gameStatus}
-        onRestart={() => setGameState(initializeGameState(gameState.setting))}
+        onRestart={handleRestart}
       />
     </div>
   );

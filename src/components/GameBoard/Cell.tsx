@@ -6,11 +6,13 @@ type Props = {
   cell: CellType;
   onOpen: (x: number, y: number) => void;
   onToggleFlag: (x: number, y: number) => void;
+  disabled: boolean;
 };
 
-export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
+export const Cell = ({ cell, onOpen, onToggleFlag, disabled }: Props) => {
   const touchTimerRef = useRef<number | null>(null);
   const longPressFiredRef = useRef(false);
+  const isDisabled = disabled || cell.isOpen;
 
   let content = "";
 
@@ -34,13 +36,13 @@ export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
       return;
     }
 
-    if (cell.isOpen || cell.isFlagged) return;
+    if (isDisabled || cell.isFlagged) return;
     onOpen(cell.x, cell.y);
   };
 
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault(); // ブラウザのコンテキストメニューを抑制
-    if (cell.isOpen) return;
+    if (isDisabled) return;
     onToggleFlag(cell.x, cell.y);
   };
 
@@ -48,7 +50,7 @@ export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
   // タッチ（スマホ）
   // ------------------------
   const handleTouchStart = () => {
-    if (cell.isOpen) return;
+    if (isDisabled) return;
 
     longPressFiredRef.current = false;
 
@@ -68,7 +70,10 @@ export const Cell = ({ cell, onOpen, onToggleFlag }: Props) => {
 
   return (
     <div
-      className={`${styles.cell} ${cell.isOpen ? styles.open : styles.closed}`}
+      className={`${styles.cell}
+        ${cell.isOpen ? styles.open : styles.closed}
+        ${disabled ? styles.cellDisabled : ""}
+`}
       onClick={handleClick}
       onContextMenu={handleRightClick}
       onTouchStart={handleTouchStart}

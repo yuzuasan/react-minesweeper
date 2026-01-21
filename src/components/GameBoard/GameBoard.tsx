@@ -6,9 +6,15 @@ type Props = {
   board: Board;
   onOpenCell: (x: number, y: number) => void;
   onToggleFlag: (x: number, y: number) => void;
+  disabled: boolean;
 };
 
-export const GameBoard = ({ board, onOpenCell, onToggleFlag }: Props) => {
+export const GameBoard = ({
+  board,
+  onOpenCell,
+  onToggleFlag,
+  disabled,
+}: Props) => {
   return (
     <div
       className={styles.board}
@@ -23,6 +29,7 @@ export const GameBoard = ({ board, onOpenCell, onToggleFlag }: Props) => {
             cell={cell}
             onOpen={onOpenCell}
             onToggleFlag={onToggleFlag}
+            disabled={disabled}
           />
         )),
       )}

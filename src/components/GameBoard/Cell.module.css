@@ -8,6 +8,10 @@
   user-select: none;
 }
 
+.cellDisabled {
+  pointer-events: none;
+}
+
 .closed {
   background-color: #ccc;
 }
