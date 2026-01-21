@@ -62,5 +62,6 @@ export function initializeGameState(setting: DifficultySetting): GameState {
     setting,
     remainingMines: setting.mineCount,
     elapsedTime: 0,
+    debug: false,
   };
 }

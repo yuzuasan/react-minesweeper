@@ -1,0 +1,4 @@
+.debug-mode {
+  outline: 2px dashed #ff9800;
+  outline-offset: 6px;
+}

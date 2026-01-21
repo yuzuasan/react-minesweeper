@@ -8,16 +8,22 @@ type Props = {
   remainingMines: number;
   elapsedTime: number;
   gameStatus: GameStatus;
+  debug: boolean;
   onRestart: () => void;
   onOpenDifficulty: () => void;
+  onToggleDebug: () => void;
+  showDebugButton: boolean;
 };
 
 export const Header = ({
   remainingMines,
   elapsedTime,
   gameStatus,
+  debug,
   onRestart,
   onOpenDifficulty,
+  onToggleDebug,
+  showDebugButton,
 }: Props) => {
   return (
     <div className={styles.header}>
@@ -25,6 +31,7 @@ export const Header = ({
       <RestartButton gameStatus={gameStatus} onRestart={onRestart} />
       <div className={styles.right}>
         <Timer elapsedTime={elapsedTime} />
+
         <button
           className={styles.settings}
           onClick={onOpenDifficulty}
@@ -32,6 +39,17 @@ export const Header = ({
         >
           ⚙
         </button>
+
+        {showDebugButton && (
+          <button
+            className={`${styles.debugButton} ${
+              debug ? styles.debugButtonActive : ""
+            }`}
+            onClick={onToggleDebug}
+          >
+            🐞
+          </button>
+        )}
       </div>
     </div>
   );

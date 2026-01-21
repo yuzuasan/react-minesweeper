@@ -32,4 +32,5 @@ export type GameState = {
   setting: DifficultySetting;
   remainingMines: number;
   elapsedTime: number;
+  debug: boolean;
 };

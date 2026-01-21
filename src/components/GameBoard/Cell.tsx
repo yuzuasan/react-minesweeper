@@ -7,23 +7,37 @@ type Props = {
   onOpen: (x: number, y: number) => void;
   onToggleFlag: (x: number, y: number) => void;
   disabled: boolean;
+  debug: boolean;
 };
 
-export const Cell = ({ cell, onOpen, onToggleFlag, disabled }: Props) => {
+export const Cell = ({
+  cell,
+  onOpen,
+  onToggleFlag,
+  disabled,
+  debug,
+}: Props) => {
   const touchTimerRef = useRef<number | null>(null);
   const longPressFiredRef = useRef(false);
   const isDisabled = disabled || cell.isOpen;
 
   let content = "";
 
-  if (cell.isOpen) {
+  // ① 旗は最優先（未開封）
+  if (!cell.isOpen && cell.isFlagged) {
+    content = "🚩";
+
+    // ② 開封済みマス
+  } else if (cell.isOpen) {
     if (cell.isMine) {
       content = "💣";
     } else if (cell.adjacentMines > 0) {
       content = String(cell.adjacentMines);
     }
-  } else if (cell.isFlagged) {
-    content = "🚩";
+
+    // ③ デバッグ用表示
+  } else if (debug) {
+    content = cell.isMine ? "💣" : String(cell.adjacentMines);
   }
 
   // ------------------------
@@ -73,7 +87,7 @@ export const Cell = ({ cell, onOpen, onToggleFlag, disabled }: Props) => {
       className={`${styles.cell}
         ${cell.isOpen ? styles.open : styles.closed}
         ${disabled ? styles.cellDisabled : ""}
-`}
+      `}
       onClick={handleClick}
       onContextMenu={handleRightClick}
       onTouchStart={handleTouchStart}

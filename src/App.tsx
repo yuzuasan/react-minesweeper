@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import styles from "./App.module.css";
 import { DifficultySelector } from "./components/DifficultySelector/DifficultySelector";
 import { GameBoard } from "./components/GameBoard/GameBoard";
 import { GameResultOverlay } from "./components/GameResultOverlay/GameResultOverlay";
 import { Header } from "./components/Header/Header";
+import { DEBUG_MODE } from "./constants/debug";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
 import { toggleFlag } from "./logic/flagHandler";
 import { initializeGameState } from "./logic/gameInitializer";
@@ -64,6 +66,13 @@ function App() {
     setGameState(initializeGameState(gameState.setting));
   };
 
+  const handleToggleDebug = () => {
+    setGameState((prev) => ({
+      ...prev,
+      debug: !prev.debug,
+    }));
+  };
+
   // タイマー制御
   useEffect(() => {
     if (gameState.gameStatus !== "playing") return;
@@ -81,13 +90,19 @@ function App() {
   }, [gameState.gameStatus]);
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div
+      className={gameState.debug ? "debug-mode" : ""}
+      style={{ display: "inline-block" }}
+    >
       <Header
         remainingMines={gameState.remainingMines}
         elapsedTime={gameState.elapsedTime}
         gameStatus={gameState.gameStatus}
         onRestart={handleRestart}
         onOpenDifficulty={() => setIsDifficultyOpen(true)}
+        debug={gameState.debug}
+        onToggleDebug={handleToggleDebug}
+        showDebugButton={DEBUG_MODE}
       />
 
       <GameBoard
@@ -95,6 +110,7 @@ function App() {
         onOpenCell={handleOpenCell}
         onToggleFlag={handleToggleFlag}
         disabled={isGameFinished}
+        debug={gameState.debug}
       />
 
       {isDifficultyOpen && (
@@ -113,6 +129,16 @@ function App() {
         status={gameState.gameStatus}
         onRestart={handleRestart}
       />
+
+      {gameState.debug && (
+        <div className={styles.panel}>
+          status: {gameState.gameStatus}
+          <br />
+          mines: {gameState.remainingMines}
+          <br />
+          time: {gameState.elapsedTime}s
+        </div>
+      )}
     </div>
   );
 }

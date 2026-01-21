@@ -7,6 +7,7 @@ type Props = {
   onOpenCell: (x: number, y: number) => void;
   onToggleFlag: (x: number, y: number) => void;
   disabled: boolean;
+  debug: boolean;
 };
 
 export const GameBoard = ({
@@ -14,6 +15,7 @@ export const GameBoard = ({
   onOpenCell,
   onToggleFlag,
   disabled,
+  debug,
 }: Props) => {
   return (
     <div
@@ -30,6 +32,7 @@ export const GameBoard = ({
             onOpen={onOpenCell}
             onToggleFlag={onToggleFlag}
             disabled={disabled}
+            debug={debug}
           />
         )),
       )}
