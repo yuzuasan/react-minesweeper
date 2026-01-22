@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.dialog {
+  background: #ddd;
+  padding: 16px;
+  border: 2px solid #999;
+  width: 320px;
+}
+
+.title {
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+.table th,
+.table td {
+  padding: 6px;
+  border: 1px solid #999;
+  font-size: 14px;
+}
+
+.table th {
+  background: #eee;
+  text-align: left;
+  font-weight: normal;
+}
+
+.table td {
+  background: #fff;
+  text-align: right;
+}
+
+.closeButton {
+  width: 100%;
+  margin-top: 12px;
+  padding: 6px;
+  background: #eee;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: #fff;
+}

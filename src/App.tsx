@@ -4,6 +4,7 @@ import { DifficultySelector } from "./components/DifficultySelector/DifficultySe
 import { GameBoard } from "./components/GameBoard/GameBoard";
 import { GameResultOverlay } from "./components/GameResultOverlay/GameResultOverlay";
 import { Header } from "./components/Header/Header";
+import { HighScoreDialog } from "./components/HighScoreDialog/HighScoreDialog";
 import { DEBUG_MODE } from "./constants/debug";
 import { DIFFICULTY_SETTINGS } from "./constants/difficulties";
 import { toggleFlag } from "./logic/flagHandler";
@@ -19,6 +20,7 @@ const initialState = initializeGameState(DIFFICULTY_SETTINGS.easy);
 function App() {
   const [gameState, setGameState] = useState<GameState>(initialState);
   const [isDifficultyOpen, setIsDifficultyOpen] = useState(false);
+  const [isHighScoreOpen, setIsHighScoreOpen] = useState(false);
   const isGameFinished =
     gameState.gameStatus === "clear" || gameState.gameStatus === "gameover";
 
@@ -124,6 +126,7 @@ function App() {
         gameStatus={gameState.gameStatus}
         onRestart={handleRestart}
         onOpenDifficulty={() => setIsDifficultyOpen(true)}
+        onOpenHighScore={() => setIsHighScoreOpen(true)}
         debug={gameState.debug}
         onToggleDebug={handleToggleDebug}
         showDebugButton={DEBUG_MODE}
@@ -136,6 +139,10 @@ function App() {
         disabled={isGameFinished}
         debug={gameState.debug}
       />
+
+      {isHighScoreOpen && (
+        <HighScoreDialog onClose={() => setIsHighScoreOpen(false)} />
+      )}
 
       {isDifficultyOpen && (
         <DifficultySelector

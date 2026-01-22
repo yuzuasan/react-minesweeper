@@ -11,6 +11,7 @@ type Props = {
   debug: boolean;
   onRestart: () => void;
   onOpenDifficulty: () => void;
+  onOpenHighScore: () => void;
   onToggleDebug: () => void;
   showDebugButton: boolean;
 };
@@ -22,6 +23,7 @@ export const Header = ({
   debug,
   onRestart,
   onOpenDifficulty,
+  onOpenHighScore,
   onToggleDebug,
   showDebugButton,
 }: Props) => {
@@ -31,6 +33,14 @@ export const Header = ({
       <RestartButton gameStatus={gameStatus} onRestart={onRestart} />
       <div className={styles.right}>
         <Timer elapsedTime={elapsedTime} />
+
+        <button
+          className={styles.highScore}
+          onClick={onOpenHighScore}
+          aria-label="ハイスコア表示"
+        >
+          🏆
+        </button>
 
         <button
           className={styles.settings}
