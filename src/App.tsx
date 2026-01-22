@@ -11,6 +11,8 @@ import { initializeGameState } from "./logic/gameInitializer";
 import { judgeGameStatus } from "./logic/gameJudge";
 import { openCell } from "./logic/openCell";
 import type { GameState } from "./types/game";
+import type { HighScoreData, HighScoreDifficulty } from "./types/score";
+import { loadHighScores, saveHighScores } from "./utils/storage";
 
 const initialState = initializeGameState(DIFFICULTY_SETTINGS.easy);
 
@@ -88,6 +90,28 @@ function App() {
       clearInterval(timerId);
     };
   }, [gameState.gameStatus]);
+
+  useEffect(() => {
+    if (gameState.gameStatus !== "clear") return;
+    if (gameState.difficulty === "custom") return;
+
+    const difficulty = gameState.difficulty as HighScoreDifficulty;
+    const clearTime = gameState.elapsedTime;
+
+    const scores = loadHighScores();
+    const current = scores[difficulty];
+
+    if (current !== null && clearTime >= current) {
+      return;
+    }
+
+    const updated: HighScoreData = {
+      ...scores,
+      [difficulty]: clearTime,
+    };
+
+    saveHighScores(updated);
+  }, [gameState.gameStatus, gameState.difficulty, gameState.elapsedTime]);
 
   return (
     <div
