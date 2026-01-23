@@ -21,6 +21,7 @@ function App() {
   const [gameState, setGameState] = useState<GameState>(initialState);
   const [isDifficultyOpen, setIsDifficultyOpen] = useState(false);
   const [isHighScoreOpen, setIsHighScoreOpen] = useState(false);
+  const [isNewRecord, setIsNewRecord] = useState(false);
   const isGameFinished =
     gameState.gameStatus === "clear" || gameState.gameStatus === "gameover";
 
@@ -68,6 +69,7 @@ function App() {
 
   const handleRestart = () => {
     setGameState(initializeGameState(gameState.setting));
+    setIsNewRecord(false);
   };
 
   const handleToggleDebug = () => {
@@ -75,6 +77,26 @@ function App() {
       ...prev,
       debug: !prev.debug,
     }));
+  };
+
+  const checkAndUpdateHighScore = (
+    difficulty: HighScoreDifficulty,
+    clearTime: number,
+  ): boolean => {
+    const scores = loadHighScores();
+    const current = scores[difficulty];
+
+    if (current !== null && clearTime >= current) {
+      return false;
+    }
+
+    const updated: HighScoreData = {
+      ...scores,
+      [difficulty]: clearTime,
+    };
+
+    saveHighScores(updated);
+    return true;
   };
 
   // タイマー制御
@@ -97,22 +119,12 @@ function App() {
     if (gameState.gameStatus !== "clear") return;
     if (gameState.difficulty === "custom") return;
 
-    const difficulty = gameState.difficulty as HighScoreDifficulty;
-    const clearTime = gameState.elapsedTime;
+    const isRecord = checkAndUpdateHighScore(
+      gameState.difficulty as HighScoreDifficulty,
+      gameState.elapsedTime,
+    );
 
-    const scores = loadHighScores();
-    const current = scores[difficulty];
-
-    if (current !== null && clearTime >= current) {
-      return;
-    }
-
-    const updated: HighScoreData = {
-      ...scores,
-      [difficulty]: clearTime,
-    };
-
-    saveHighScores(updated);
+    setIsNewRecord(isRecord);
   }, [gameState.gameStatus, gameState.difficulty, gameState.elapsedTime]);
 
   return (
@@ -150,6 +162,7 @@ function App() {
           current={gameState.setting}
           onSelect={(setting) => {
             setGameState(initializeGameState(setting));
+            setIsNewRecord(false);
             setIsDifficultyOpen(false);
           }}
           onClose={() => setIsDifficultyOpen(false)}
@@ -158,6 +171,7 @@ function App() {
 
       <GameResultOverlay
         status={gameState.gameStatus}
+        isNewRecord={isNewRecord}
         onRestart={handleRestart}
       />
 

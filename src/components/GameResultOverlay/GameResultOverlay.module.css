@@ -1,3 +1,10 @@
+.newRecord {
+  margin: 8px 0;
+  color: #c90;
+  font-weight: bold;
+  text-align: center;
+}
+
 .overlay {
   position: absolute;
   inset: 0;
