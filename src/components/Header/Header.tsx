@@ -29,11 +29,8 @@ export const Header = ({
 }: Props) => {
   return (
     <div className={styles.header}>
-      <MineCounter remainingMines={remainingMines} />
-      <RestartButton gameStatus={gameStatus} onRestart={onRestart} />
-      <div className={styles.right}>
-        <Timer elapsedTime={elapsedTime} />
-
+      {/* 上段：ゲーム情報 */}
+      <div className={styles.top}>
         <button
           className={styles.highScore}
           onClick={onOpenHighScore}
@@ -60,6 +57,12 @@ export const Header = ({
             🐞
           </button>
         )}
+      </div>
+
+      <div className={styles.bottom}>
+        <MineCounter remainingMines={remainingMines} />
+        <RestartButton gameStatus={gameStatus} onRestart={onRestart} />
+        <Timer elapsedTime={elapsedTime} />
       </div>
     </div>
   );
