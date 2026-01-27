@@ -3,4 +3,8 @@
   gap: 2px;
   background-color: #888;
   width: fit-content;
+
+  padding: 2px;
+  border: 2px solid #808080;
+  border-radius: 2px;
 }
