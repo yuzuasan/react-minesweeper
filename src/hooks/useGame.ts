@@ -21,12 +21,15 @@ export function useGame() {
     setGameState((prev) => {
       if (isGameFinished) return prev;
 
-      const board = openCell(prev.board, x, y);
-      const status = judgeGameStatus(board);
+      const newCells = openCell(prev.board.cells, x, y);
+      const status = judgeGameStatus(newCells);
 
       return {
         ...prev,
-        board,
+        board: {
+          ...prev.board,
+          cells: newCells,
+        },
         gameStatus:
           prev.gameStatus === "ready" && status === "playing"
             ? "playing"

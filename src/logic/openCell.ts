@@ -1,42 +1,48 @@
-import type { Board } from "../types/game";
+import type { Cell } from "../types/game";
 import { DIRECTIONS_8 } from "./directions";
 
 /**
  * 指定したマスを開く
  * adjacentMines === 0 の場合は周囲を再帰的に開放する
  */
-export function openCell(board: Board, x: number, y: number): Board {
-  // Board を最初に clone
-  const newBoard: Board = {
-    ...board,
-    cells: board.cells.map((row) => row.map((cell) => ({ ...cell }))),
-  };
+export function openCell(cells: Cell[][], x: number, y: number): Cell[][] {
+  if (y < 0 || y >= cells.length || x < 0 || x >= cells[0].length) {
+    return cells;
+  }
 
-  openCellRecursive(newBoard, x, y);
+  const target = cells[y][x];
+  if (target.isOpen || target.isFlagged) {
+    return cells;
+  }
 
-  return newBoard;
+  let newCells = openSingleCell(cells, x, y);
+
+  if (target.isMine || target.adjacentMines !== 0) {
+    return newCells;
+  }
+
+  for (const [dx, dy] of DIRECTIONS_8) {
+    newCells = openCell(newCells, x + dx, y + dy);
+  }
+
+  return newCells;
 }
 
-function openCellRecursive(board: Board, x: number, y: number): void {
-  // 範囲外チェック
-  if (x < 0 || x >= board.width || y < 0 || y >= board.height) {
-    return;
-  }
+function openSingleCell(cells: Cell[][], x: number, y: number): Cell[][] {
+  return cells.map((row, rowIndex) =>
+    row.map((cell, colIndex) => {
+      if (rowIndex !== y || colIndex !== x) {
+        return cell;
+      }
 
-  const cell = board.cells[y][x];
+      if (cell.isOpen || cell.isFlagged) {
+        return cell;
+      }
 
-  // すでに開いている or 旗が立っている場合は何もしない
-  if (cell.isOpen || cell.isFlagged) {
-    return;
-  }
-
-  // マスを開く
-  cell.isOpen = true;
-
-  // 周囲地雷数が 0 の場合は再帰的に開放
-  if (cell.adjacentMines === 0 && !cell.isMine) {
-    for (const [dx, dy] of DIRECTIONS_8) {
-      openCellRecursive(board, x + dx, y + dy);
-    }
-  }
+      return {
+        ...cell,
+        isOpen: true,
+      };
+    }),
+  );
 }
