@@ -5,7 +5,7 @@ import { DIRECTIONS_8 } from "./directions";
  * 地雷をランダムに配置する
  */
 export function placeMines(board: Board): Board {
-  const { width, height, mineCount } = board;
+  const { width, height, mineCount, cells } = board;
   const totalCells = width * height;
 
   if (mineCount >= totalCells) {
@@ -22,28 +22,37 @@ export function placeMines(board: Board): Board {
   }
 
   // 先頭 mineCount 個を地雷として使用
-  for (let i = 0; i < mineCount; i++) {
-    const index = indices[i];
-    const x = index % width;
-    const y = Math.floor(index / width);
+  const mineSet = new Set<number>(indices.slice(0, mineCount));
 
-    board.cells[y][x].isMine = true;
-  }
+  const newCells = cells.map((row, y) =>
+    row.map((cell, x) => {
+      const index = y * width + x;
+      return {
+        ...cell,
+        isMine: mineSet.has(index),
+      };
+    }),
+  );
 
-  return board;
+  return {
+    ...board,
+    cells: newCells,
+  };
 }
 
 /**
  * 各マスの周囲地雷数を計算する
  */
 export function calculateAdjacentMines(board: Board): Board {
-  for (let y = 0; y < board.height; y++) {
-    for (let x = 0; x < board.width; x++) {
-      const cell = board.cells[y][x];
+  const { width, height, cells } = board;
 
+  const newCells = cells.map((row, y) =>
+    row.map((cell, x) => {
       if (cell.isMine) {
-        cell.adjacentMines = 0;
-        continue;
+        return {
+          ...cell,
+          adjacentMines: 0,
+        };
       }
 
       let count = 0;
@@ -52,16 +61,26 @@ export function calculateAdjacentMines(board: Board): Board {
         const nx = x + dx;
         const ny = y + dy;
 
-        if (nx >= 0 && nx < board.width && ny >= 0 && ny < board.height) {
-          if (board.cells[ny][nx].isMine) {
-            count++;
-          }
+        if (
+          nx >= 0 &&
+          nx < width &&
+          ny >= 0 &&
+          ny < height &&
+          cells[ny][nx].isMine
+        ) {
+          count++;
         }
       }
 
-      cell.adjacentMines = count;
-    }
-  }
+      return {
+        ...cell,
+        adjacentMines: count,
+      };
+    }),
+  );
 
-  return board;
+  return {
+    ...board,
+    cells: newCells,
+  };
 }
