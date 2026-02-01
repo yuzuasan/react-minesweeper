@@ -1,52 +1,38 @@
-import type { Board } from "../types/game";
+import type { Cell } from "../types/game";
 
 /**
  * 指定したマスの旗をトグルする
  */
 export function toggleFlag(
-  board: Board,
+  cells: Cell[][],
   remainingMines: number,
   x: number,
   y: number,
-): {
-  board: Board;
-  remainingMines: number;
-} {
-  // 範囲外チェック
-  if (x < 0 || x >= board.width || y < 0 || y >= board.height) {
-    return { board, remainingMines };
+) {
+  if (y < 0 || y >= cells.length || x < 0 || x >= cells[0].length) {
+    return { cells, remainingMines };
   }
 
-  const cell = board.cells[y][x];
+  const target = cells[y][x];
 
-  // すでに開いているマスは何もしない
-  if (cell.isOpen) {
-    return { board, remainingMines };
+  if (target.isOpen) {
+    return { cells, remainingMines };
   }
 
-  // ★ board をコピー
-  const newCells = board.cells.map((row) => row.map((c) => ({ ...c })));
-
-  const target = newCells[y][x];
-
-  // 旗が立っている場合は解除
-  if (target.isFlagged) {
-    target.isFlagged = false;
-    return {
-      board: { ...board, cells: newCells },
-      remainingMines: remainingMines + 1,
-    };
+  if (!target.isFlagged && remainingMines === 0) {
+    return { cells, remainingMines };
   }
 
-  // 旗が立っていない場合は設置（上限チェック）
-  if (remainingMines <= 0) {
-    return { board, remainingMines };
-  }
-
-  target.isFlagged = true;
+  const newCells = cells.map((row, rowIndex) =>
+    row.map((cell, colIndex) =>
+      rowIndex === y && colIndex === x
+        ? { ...cell, isFlagged: !cell.isFlagged }
+        : cell,
+    ),
+  );
 
   return {
-    board: { ...board, cells: newCells },
-    remainingMines: remainingMines - 1,
+    cells: newCells,
+    remainingMines: target.isFlagged ? remainingMines + 1 : remainingMines - 1,
   };
 }

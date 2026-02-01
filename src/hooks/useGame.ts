@@ -42,8 +42,8 @@ export function useGame() {
     setGameState((prev) => {
       if (isGameFinished) return prev;
 
-      const { board, remainingMines } = toggleFlag(
-        prev.board,
+      const { cells, remainingMines } = toggleFlag(
+        prev.board.cells,
         prev.remainingMines,
         x,
         y,
@@ -51,7 +51,10 @@ export function useGame() {
 
       return {
         ...prev,
-        board,
+        board: {
+          ...prev.board,
+          cells: cells,
+        },
         remainingMines,
       };
     });
