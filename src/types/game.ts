@@ -1,8 +1,8 @@
 export type GameStatus = "ready" | "playing" | "clear" | "gameover";
 
 export type Cell = {
-  x: number;
-  y: number;
+  readonly x: number;
+  readonly y: number;
   isMine: boolean;
   isOpen: boolean;
   isFlagged: boolean;
@@ -10,19 +10,19 @@ export type Cell = {
 };
 
 export type Board = {
-  width: number;
-  height: number;
-  mineCount: number;
+  readonly width: number;
+  readonly height: number;
+  readonly mineCount: number;
   cells: Cell[][];
 };
 
 export type DifficultyType = "easy" | "normal" | "hard" | "custom";
 
 export type DifficultySetting = {
-  type: DifficultyType;
-  width: number;
-  height: number;
-  mineCount: number;
+  readonly type: DifficultyType;
+  readonly width: number;
+  readonly height: number;
+  readonly mineCount: number;
 };
 
 export type GameState = {
