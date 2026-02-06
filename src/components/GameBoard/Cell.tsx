@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { getCellDisplay } from "../../logic/getCellDisplay";
 import type { Cell as CellType } from "../../types/game";
 import styles from "./Cell.module.css";
 
@@ -21,23 +22,30 @@ export const Cell = ({
   const longPressFiredRef = useRef(false);
   const isDisabled = disabled || cell.isOpen;
 
+  const display = getCellDisplay(cell, debug);
+
   let content = "";
 
-  // ① 旗は最優先（未開封）
-  if (!cell.isOpen && cell.isFlagged) {
-    content = "🚩";
+  switch (display.type) {
+    case "flag":
+      content = "🚩";
+      break;
 
-    // ② 開封済みマス
-  } else if (cell.isOpen) {
-    if (cell.isMine) {
+    case "mine":
       content = "💣";
-    } else if (cell.adjacentMines > 0) {
-      content = String(cell.adjacentMines);
-    }
+      break;
 
-    // ③ デバッグ用表示
-  } else if (debug) {
-    content = cell.isMine ? "💣" : String(cell.adjacentMines);
+    case "number":
+      content = String(display.value);
+      break;
+
+    case "debug":
+      content = display.value;
+      break;
+
+    case "empty":
+    default:
+      content = "";
   }
 
   // ------------------------
